@@ -542,17 +542,17 @@ const openaiModels = [
 ];
 
 const googleModels = [
-  gemini-3.8-flash,
-  gemini-3.7-flash,
-  gemini-3.6-flash,
-  gemini-3.5-flash,
-  gemini-3.5-flash-lite,
-  gemini-3-flash-preview,
-  gemini-3.1-pro-preview,
-  gemini-3.1-flash-lite,
-  gemini-flash-latest,
-  gemini-flash-lite-latest,
-  gemini-pro-latest,
+  "gemini-3.8-flash",
+  "gemini-3.7-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3-flash-preview",
+  "gemini-3.1-pro-preview",
+  "gemini-3.1-flash-lite",
+  "gemini-flash-latest",
+  "gemini-flash-lite-latest",
+  "gemini-pro-latest",
 ];
 
 const anthropicModels = [
@@ -740,9 +740,9 @@ export const DEFAULT_MODELS = [
     available: true,
     sorted: seq++,
     provider: {
-      id: google,
-      providerName: Google,
-      providerType: google,
+      id: "google",
+      providerName: "Google",
+      providerType: "google",
       sorted: 1,
     },
   })),
