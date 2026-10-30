@@ -64,9 +64,9 @@ const DEFAULT_AI302_URL = isApp ? AI302_BASE_URL : ApiPath["302.AI"];
 
 const DEFAULT_ACCESS_STATE = {
   accessCode: "",
-  useCustomConfig: false,
+  useCustomConfig: true,
 
-  provider: ServiceProvider.OpenAI,
+  provider: ServiceProvider.Google,
 
   // openai
   openaiUrl: DEFAULT_OPENAI_URL,
@@ -80,7 +80,7 @@ const DEFAULT_ACCESS_STATE = {
   // google ai studio
   googleUrl: DEFAULT_GOOGLE_URL,
   googleApiKey: "",
-  googleApiVersion: "v1",
+  googleApiVersion: "v1beta",
   googleSafetySettings: GoogleSafetySettingsThreshold.BLOCK_ONLY_HIGH,
 
   // anthropic
@@ -284,17 +284,17 @@ export const useAccessStore = createPersistStore(
   }),
   {
     name: StoreKey.Access,
-    version: 2,
+    version: 3,
     migrate(persistedState, version) {
+      const state = persistedState as any;
       if (version < 2) {
-        const state = persistedState as {
-          token: string;
-          openaiApiKey: string;
-          azureApiVersion: string;
-          googleApiKey: string;
-        };
         state.openaiApiKey = state.token;
         state.azureApiVersion = "2023-08-01-preview";
+      }
+      if (version < 3) {
+        state.useCustomConfig = true;
+        state.provider = ServiceProvider.Google;
+        state.googleApiVersion = "v1beta";
       }
 
       return persistedState as any;
