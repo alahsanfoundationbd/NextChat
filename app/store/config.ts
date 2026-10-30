@@ -64,7 +64,7 @@ export const DEFAULT_CONFIG = {
   models: DEFAULT_MODELS as any as LLMModel[],
 
   modelConfig: {
-    model: "gemini-3.8-flash" as ModelType,
+    model: "gemini-1.5-flash" as ModelType,
     providerName: "Google" as ServiceProvider,
     temperature: 0.5,
     top_p: 1,
@@ -195,7 +195,7 @@ export const useAppConfig = createPersistStore(
   }),
   {
     name: StoreKey.Config,
-    version: 4.2,
+    version: 4.3,
 
     merge(persistedState, currentState) {
       const state = persistedState as ChatConfig | undefined;
@@ -255,8 +255,8 @@ export const useAppConfig = createPersistStore(
           DEFAULT_CONFIG.modelConfig.compressProviderName;
       }
 
-      if (version < 4.2) {
-        state.modelConfig.model = "gemini-3.8-flash" as ModelType;
+      if (version < 4.3) {
+        state.modelConfig.model = "gemini-1.5-flash" as ModelType;
         state.modelConfig.providerName = "Google" as ServiceProvider;
       }
 
