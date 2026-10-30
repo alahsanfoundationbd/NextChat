@@ -77,12 +77,29 @@ export class GeminiProApi implements LLMApi {
       });
     }
 
-    return (
+    let mainText =
       getTextFromParts(res?.candidates?.at(0)?.content?.parts) ||
-      content || //getTextFromParts(res?.at(0)?.candidates?.at(0)?.content?.parts) ||
+      content ||
       res?.error?.message ||
-      ""
-    );
+      "";
+
+    const groundingMetadata =
+      res?.candidates?.at(0)?.groundingMetadata ||
+      (Array.isArray(res) ? res[res.length - 1]?.candidates?.at(0)?.groundingMetadata : undefined);
+
+    if (groundingMetadata?.groundingChunks && Array.isArray(groundingMetadata.groundingChunks)) {
+      const links = groundingMetadata.groundingChunks
+        .map((c: any) => c?.web)
+        .filter((w: any) => w && w.uri)
+        .map((w: any) => `- [${w.title || w.uri}](${w.uri})`);
+
+      const uniqueLinks = Array.from(new Set(links));
+      if (uniqueLinks.length > 0 && !mainText.includes("🔍 **Sources:**")) {
+        mainText += `\n\n🔍 **তথ্যসূত্র (Sources):**\n${uniqueLinks.join("\n")}`;
+      }
+    }
+
+    return mainText;
   }
   speech(options: SpeechOptions): Promise<ArrayBuffer> {
     throw new Error("Method not implemented.");
@@ -150,8 +167,9 @@ export class GeminiProApi implements LLMApi {
         model: options.config.model,
       },
     };
-    const requestPayload = {
+    const requestPayload: any = {
       contents: messages,
+      tools: [{ google_search: {} }],
       generationConfig: {
         // stopSequences: [
         //   "Title"
@@ -211,15 +229,20 @@ export class GeminiProApi implements LLMApi {
           .getAsTools(
             useChatStore.getState().currentSession().mask?.plugin || [],
           );
+
+        // Enable Google Search grounding tool by default for live web browsing
+        const googleTools: any[] = [{ google_search: {} }];
+        if (tools.length > 0) {
+          googleTools.push({ functionDeclarations: tools.map((tool: any) => tool.function) });
+        }
+
+        const sources: Array<{ title: string; uri: string }> = [];
+
         return stream(
           chatPath,
           requestPayload,
           getHeaders(),
-          // @ts-ignore
-          tools.length > 0
-            ? // @ts-ignore
-              [{ functionDeclarations: tools.map((tool) => tool.function) }]
-            : [],
+          googleTools,
           funcs,
           controller,
           // parseSSE
@@ -241,10 +264,29 @@ export class GeminiProApi implements LLMApi {
                 },
               });
             }
-            return chunkJson?.candidates
-              ?.at(0)
-              ?.content.parts?.map((part: { text: string }) => part.text)
-              .join("\n\n");
+            const groundingChunks =
+              chunkJson?.candidates?.at(0)?.groundingMetadata?.groundingChunks;
+            if (Array.isArray(groundingChunks)) {
+              for (const chunk of groundingChunks) {
+                if (chunk?.web?.uri) {
+                  const item = {
+                    title: chunk.web.title || chunk.web.uri,
+                    uri: chunk.web.uri,
+                  };
+                  if (!sources.some((s) => s.uri === item.uri)) {
+                    sources.push(item);
+                  }
+                }
+              }
+            }
+
+            const chunkText =
+              chunkJson?.candidates
+                ?.at(0)
+                ?.content.parts?.map((part: { text: string }) => part.text)
+                .join("\n\n") || "";
+
+            return chunkText;
           },
           // processToolMessage, include tool_calls message and tool call results
           (
@@ -285,7 +327,18 @@ export class GeminiProApi implements LLMApi {
               })),
             );
           },
-          options,
+          {
+            ...options,
+            onFinish: (message: string, res: any) => {
+              if (sources.length > 0 && !message.includes("🔍 **তথ্যসূত্র")) {
+                const sourceList = sources
+                  .map((s) => `- [${s.title}](${s.uri})`)
+                  .join("\n");
+                message += `\n\n🔍 **তথ্যসূত্র (Sources):**\n${sourceList}`;
+              }
+              options.onFinish(message, res);
+            },
+          },
         );
       } else {
         const res = await fetch(chatPath, chatPayload);
