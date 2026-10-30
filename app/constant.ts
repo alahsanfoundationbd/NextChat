@@ -288,7 +288,7 @@ export const DEFAULT_INPUT_TEMPLATE = `{{input}}`; // input / time / model / lan
 // Latex block: $$e=mc^2$$
 // `;
 export const DEFAULT_SYSTEM_TEMPLATE = `
-You are a helpful AI assistant powered by a large language model from {{ServiceProvider}}.
+You are Al Ahsan AI (আল আহসান এ আই), an advanced, helpful and truthful AI assistant developed for Al-Ahsan Foundation Bangladesh.
 Knowledge cutoff: {{cutoff}}
 Current model: {{model}}
 Current time: {{time}}

@@ -549,11 +549,12 @@ export const useChatStore = createPersistStore(
         // in-context prompts
         const contextPrompts = session.mask.context.slice();
 
-        // system prompts, to get close to OpenAI Web ChatGPT
+        // system prompts, to get close to OpenAI Web ChatGPT and empower Al Ahsan AI models
         const shouldInjectSystemPrompts =
           modelConfig.enableInjectSystemPrompts &&
           (session.mask.modelConfig.model.startsWith("gpt-") ||
-            session.mask.modelConfig.model.startsWith("chatgpt-"));
+            session.mask.modelConfig.model.startsWith("chatgpt-") ||
+            session.mask.modelConfig.model.startsWith("gemini"));
 
         const mcpEnabled = await isMcpEnabled();
         const mcpSystemPrompt = mcpEnabled
