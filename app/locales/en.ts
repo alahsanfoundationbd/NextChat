@@ -315,10 +315,10 @@ const en: LocaleType = {
     },
     Access: {
       SaasStart: {
-        Title: "Use NextChat AI",
+        Title: "Use Al Ahsan AI",
         Label: " (Most Cost-Effective Option)",
         SubTitle:
-          "Maintained by NextChat, zero setup needed, unlock the latest models",
+          "Maintained by Al Ahsan AI, zero setup needed, unlock the latest models",
         ChatNow: "Start Now",
       },
       AccessCode: {
