@@ -64,7 +64,7 @@ export const DEFAULT_CONFIG = {
   models: DEFAULT_MODELS as any as LLMModel[],
 
   modelConfig: {
-    model: "gemini-1.5-flash" as ModelType,
+    model: "gemini-3.8-flash" as ModelType,
     providerName: "Google" as ServiceProvider,
     temperature: 0.5,
     top_p: 1,
@@ -256,7 +256,7 @@ export const useAppConfig = createPersistStore(
       }
 
       if (version < 4.3) {
-        state.modelConfig.model = "gemini-1.5-flash" as ModelType;
+        state.modelConfig.model = "gemini-3.8-flash" as ModelType;
         state.modelConfig.providerName = "Google" as ServiceProvider;
       }
 
