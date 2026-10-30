@@ -64,8 +64,8 @@ export const DEFAULT_CONFIG = {
   models: DEFAULT_MODELS as any as LLMModel[],
 
   modelConfig: {
-    model: "gpt-4o-mini" as ModelType,
-    providerName: "OpenAI" as ServiceProvider,
+    model: "gemini-1.5-flash" as ModelType,
+    providerName: "Google" as ServiceProvider,
     temperature: 0.5,
     top_p: 1,
     max_tokens: 4000,
@@ -195,7 +195,7 @@ export const useAppConfig = createPersistStore(
   }),
   {
     name: StoreKey.Config,
-    version: 4.1,
+    version: 4.2,
 
     merge(persistedState, currentState) {
       const state = persistedState as ChatConfig | undefined;
@@ -253,6 +253,11 @@ export const useAppConfig = createPersistStore(
           DEFAULT_CONFIG.modelConfig.compressModel;
         state.modelConfig.compressProviderName =
           DEFAULT_CONFIG.modelConfig.compressProviderName;
+      }
+
+      if (version < 4.2) {
+        state.modelConfig.model = "gemini-1.5-flash" as ModelType;
+        state.modelConfig.providerName = "Google" as ServiceProvider;
       }
 
       return state as any;
