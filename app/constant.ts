@@ -483,6 +483,7 @@ export const VISION_MODEL_REGEXES = [
   /gemini-1\.5/,
   /gemini-exp/,
   /gemini-2\.[05]/,
+  /gemini-3(\.[0-9]+)?/,
   /learnlm/,
   /qwen-vl/,
   /qwen2-vl/,
@@ -498,12 +499,14 @@ export const VISION_MODEL_REGEXES = [
 
 export const EXCLUDE_VISION_MODEL_REGEXES = [/claude-3-5-haiku-20241022/];
 
-// Google Gemini Free Tier Models
+// Google Gemini Models
 const googleModels = [
-  "gemini-1.5-flash",
-  "gemini-1.5-flash-8b",
-  "gemini-2.0-flash",
-  "gemini-1.5-pro",
+  "gemini-3.8-flash",
+  "gemini-3.6-flash",
+  "gemini-3.1-flash-lite",
+  "gemini-3-flash-preview",
+  "gemini-2.5-flash",
+  "gemini-2.5-pro",
 ];
 
 let seq = 1000; // 内置的模型序号生成器从1000开始
