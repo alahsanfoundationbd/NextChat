@@ -9,10 +9,10 @@ import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { getServerSideConfig } from "./config/server";
 
 export const metadata: Metadata = {
-  title: "আল আহসান এআই",
-  description: "আল আহসান এআই — আপনার ব্যক্তিগত এআই সহকারী।",
+  title: "আল আহসান এ আই",
+  description: "আল আহসান এ আই — আপনার ব্যক্তিগত এআই সহকারী।",
   appleWebApp: {
-    title: "আল আহসান এআই",
+    title: "আল আহসান এ আই",
     statusBarStyle: "default",
   },
 };

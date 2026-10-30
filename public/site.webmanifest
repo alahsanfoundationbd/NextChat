@@ -1,6 +1,6 @@
 {
-  "name": "আল আহসান এআই",
-  "short_name": "আল আহসান এআই",
+  "name": "আল আহসান এ আই",
+  "short_name": "আল আহসান এ আই",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +13,6 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone"
